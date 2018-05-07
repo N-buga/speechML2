@@ -1,0 +1,74 @@
+Tensorboard log directory already exists.
+Model Save directory already exists.
+DeepSpeech(
+  (conv): Sequential(
+    (0): Conv2d(1, 32, kernel_size=(41, 11), stride=(2, 2), padding=(0, 10))
+    (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): Hardtanh(min_val=0, max_val=20, inplace)
+    (3): Conv2d(32, 32, kernel_size=(21, 11), stride=(2, 1))
+    (4): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (5): Hardtanh(min_val=0, max_val=20, inplace)
+  )
+  (rnns): Sequential(
+    (0): BatchRNN(
+      (rnn): GRU(672, 800, bias=False, bidirectional=True)
+    )
+    (1): BatchRNN(
+      (batch_norm): SequenceWise (
+      BatchNorm1d(800, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
+      (rnn): GRU(800, 800, bias=False, bidirectional=True)
+    )
+    (2): BatchRNN(
+      (batch_norm): SequenceWise (
+      BatchNorm1d(800, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
+      (rnn): GRU(800, 800, bias=False, bidirectional=True)
+    )
+    (3): BatchRNN(
+      (batch_norm): SequenceWise (
+      BatchNorm1d(800, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
+      (rnn): GRU(800, 800, bias=False, bidirectional=True)
+    )
+    (4): BatchRNN(
+      (batch_norm): SequenceWise (
+      BatchNorm1d(800, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True))
+      (rnn): GRU(800, 800, bias=False, bidirectional=True)
+    )
+  )
+  (fc): Sequential(
+    (0): SequenceWise (
+    Sequential(
+      (0): BatchNorm1d(800, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (1): Linear(in_features=800, out_features=29, bias=False)
+    ))
+  )
+  (inference_softmax): InferenceBatchSoftmax()
+)
+Number of parameters: 38067968
+Traceback (most recent call last):
+  File "deepspeech.pytorch/train.py", line 280, in <module>
+    out = model(inputs)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/modules/module.py", line 491, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/n_bugakova/nadya/speechML/3/deepspeech.pytorch/model.py", line 178, in forward
+    x = self.rnns(x)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/modules/module.py", line 491, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/modules/container.py", line 91, in forward
+    input = module(input)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/modules/module.py", line 491, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/n_bugakova/nadya/speechML/3/deepspeech.pytorch/model.py", line 67, in forward
+    x, _ = self.rnn(x)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/modules/module.py", line 491, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/modules/rnn.py", line 192, in forward
+    output, hidden = func(input, self.all_weights, hx, batch_sizes)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/_functions/rnn.py", line 323, in forward
+    return func(input, *fargs, **fkwargs)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/_functions/rnn.py", line 243, in forward
+    nexth, output = func(input, hidden, weight, batch_sizes)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/_functions/rnn.py", line 86, in forward
+    hy, output = inner(input, hidden[l], weight[l], batch_sizes)
+  File "/home/n_bugakova/miniconda3/envs/categ_bayes/lib/python3.6/site-packages/torch/nn/_functions/rnn.py", line 121, in forward
+    output = torch.cat(output, 0).view(input.size(0), *output[0].size())
+RuntimeError: $ Torch: not enough memory: you tried to allocate 0GB. Buy new RAM! at /opt/conda/conda-bld/pytorch_1524584710464/work/aten/src/TH/THGeneral.c:218
