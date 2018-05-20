@@ -5,11 +5,13 @@ import numpy as np
 
 
 class FeatureExtractor:
-
-    def extract_features(self, wav_path, frame_sec=0.01):
+    @staticmethod
+    def extract_features(wav_path, frame_size, frame_step):
         """
         Extracts features for classification ny frames for .wav file
 
+        :param frame_step: step of sliding window
+        :param frame_size: window size
         :param wav_path: string, path to .wav file
         :return: pandas.DataFrame with features of shape (n_chunks, n_features)
         """
@@ -17,17 +19,17 @@ class FeatureExtractor:
         rate, audio = wav.read(wav_path)
 
         # Let's make and display a mel-scaled power (energy-squared) spectrogram
-        frame_size = int(rate * frame_sec)
 
         filterbanks = []
         mfccs = []
 
-        for i in range(0, len(audio) - frame_size, frame_size):
+        for i in range(0, len(audio) - frame_size, frame_step):
+            end = i + frame_step
             # Convert to log scale (dB). We'll use the peak power (max) as reference.
-            cur_filterbank = librosa.feature.melspectrogram(y=audio.astype(np.float)[i: i + frame_size], sr=rate)
-            filterbanks.append(np.mean(np.log(cur_filterbank), axis=1))
+            cur_filterbank = librosa.feature.melspectrogram(y=audio.astype(np.float)[i: end], sr=rate)
+            filterbanks.append(np.mean(cur_filterbank, axis=1))
             # Next, we'll extract the top 13 Mel-frequency cepstral coefficients (MFCCs)
-            cur_mfcc = librosa.feature.mfcc(y=audio.astype(np.float)[i: i + frame_size], sr=rate)
+            cur_mfcc = librosa.feature.mfcc(y=audio.astype(np.float)[i: end], sr=rate)
             mfccs.append(np.mean(cur_mfcc, axis=1))
 
         filterbank = np.vstack(filterbanks)

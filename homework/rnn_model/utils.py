@@ -7,10 +7,6 @@ def chunks(l, n):
         yield l[i:i + n]
 
 
-def in_any(x, ranges):
-    return any([x in rr for rr in ranges])
-
-
 def time_to_num(time, sample_len, duration):
     return int(sample_len * time / duration)
 

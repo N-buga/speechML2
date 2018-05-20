@@ -3,42 +3,21 @@
 This tool detects laughter interval in audio files.
 
 ### Repo structure
-laughter_classification - everything related with frame-wise 
- laughter classification: model training, visualization, tuning,
-  cross-valiadation
+rnn_model - realization of rnn model for laugh prediction.
 
-laughter_classification_test - test for helper classes
- 
-laughter_prediction - module for laughter preidiction for
-arbitrary audio file in .wav format
+Usage:
 
-models - serialized pre-learned models for classifiation
+`from rnn_model import RNNPredictor`
 
-features - pre-extracted features in .csv format
+- `fit(self, dir_data, path_to_labels, frame_sec, cnt_audio, epochs=15, batch_size=16)`
+- `fit_and_estimate(self, dir_data, path_to_labels, frame_sec, cnt_audio, validation_split=0.3, epochs=15, batch_size=16)`
+- `@staticmethod get_labels(path_to_labels, wav_path, frame_sec)`
+- `predict_proba(self, wav_path, frame_sec)`
+- `predict_classes(self, wav_path, frame_sec)`
 
-params - configuration files for laughter prediction
+Example of usage can be found in `example.ipynb`.
 
 ### Data
 Audio corpus available at 
 http://www.dcs.gla.ac.uk/vincia/?p=378 (vocalizationcorpus.zip)
 
-### Serialized models
-Available at https://goo.gl/D04Wmm
-
-### Pre-extracted features
-Available at https://goo.gl/CkRjZO
-
-### How to use
-usage: process_audio.py [-h] [--wav_path WAV_PATH] [--params PARAMS]
-
-Script for prediction laughter intervals for .wav file
-
-optional arguments:
-  -h, --help           show this help message and exit
-  --wav_path WAV_PATH  Path to .wav file
-  --params PARAMS      /JSON file with the classification parameters. Default:
-                       ../params/default_params.json.
-
-### Note
-Tool expects you to have python2 kernel with installed pyAudioAnalysis
-named ipykernel_py2
